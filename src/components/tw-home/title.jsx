@@ -3,38 +3,44 @@ import {FormattedMessage} from 'react-intl';
 
 import styles from './title.css';
 
-const About = () => {
-    return (
-        <div className={styles.title}>
-            <h1>TurboWarp</h1>
-            <span className={styles.subtitles}>
-                <div>
+const About = () => (<React.Fragment>
+    <div className={styles.title}>
+        <h1>TurboWarp</h1>
+        <span className={styles.subtitles}>
+            <div>
+                <FormattedMessage
+                    defaultMessage="Unofficial Scratch Mod"
+                    description="Text for explaining this is an unofficial mod of scratch on the home page"
+                    id="tw.home.mod"
+                />
+            </div>
+            <div>
+                <a href="https://github.com/TurboWarp/">
                     <FormattedMessage
-                        defaultMessage="Unofficial Scratch Mod"
-                        description="Text for explaining this is an unofficial mod of scratch on the home page"
-                        id="tw.home.mod"
+                        defaultMessage="Source Code"
+                        description="Text for source code link on the home page"
+                        id="tw.home.code"
                     />
-                </div>
-                <div>
-                    <a href="https://github.com/TurboWarp/">
-                        <FormattedMessage
-                            defaultMessage="Source Code"
-                            description="Text for source code link on the home page"
-                            id="tw.home.code"
-                        />
-                    </a>
+                </a>
                     &nbsp;-&nbsp;
-                    <a href="/privacy.html">
-                        <FormattedMessage
-                            defaultMessage="Privacy"
-                            description="Text for privacy policy link on the home page"
-                            id="tw.home.privacy"
-                        />
-                    </a>
-                </div>
-            </span>
-        </div>
-    );
-};
+                <a href="/privacy.html">
+                    <FormattedMessage
+                        defaultMessage="Privacy"
+                        description="Text for privacy policy link on the home page"
+                        id="tw.home.privacy"
+                    />
+                </a>
+            </div>
+        </span>
+    </div>
+    <p>This is an experiment that tries to make projects run at 60 FPS without making them run too fast. Don't use it for anything serious yet. I'm just looking for some initial feedback.</p>
+    <ul>
+        <li>Manually enable 60 FPS mode (alt+click flag)</li>
+        <li>Position is the only thing that is interpolated. Direction, size, etc. are not. Pen cannot be interpolated.</li>
+        <li>There may be an additional frame of input delay.</li>
+        <li>Slow projects will probably run slower.</li>
+        <li>Expect to find bugs. Please report them.</li>
+    </ul>
+</React.Fragment>);
 
 export default About;
