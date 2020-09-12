@@ -12,7 +12,7 @@ const getInitialCompatibility = () => {
     if (searchParams.has('60fps')) {
         return false;
     }
-    return true;
+    return false; // temporarily turn off compatibility by default
 };
 
 const getInitialUsername = () => {
