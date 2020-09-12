@@ -35,10 +35,10 @@ const About = () => (<React.Fragment>
     </div>
     <p>This is an experiment that tries to make projects run at 60 FPS without making them run too fast. Don't use it for anything serious yet. I'm just looking for some initial feedback.</p>
     <ul>
-        <li>Manually enable 60 FPS mode (alt+click flag)</li>
-        <li>Position is the only thing that is interpolated. Direction, size, etc. are not. Pen cannot be interpolated.</li>
-        <li>There may be an additional frame of input delay.</li>
-        <li>Slow projects will probably run slower.</li>
+        <li>Manually enable 60 FPS mode if not enabled (alt+click flag)</li>
+        <li>Position, direction, and size are interpolated. Pen cannot be interpolated.</li>
+        <li>There may be additional input delay.</li>
+        <li>Projects may lag more, although, TurboWarp is usually fast enough that this doesn't happen.</li>
         <li>Expect to find bugs. Please report them.</li>
     </ul>
 </React.Fragment>);
