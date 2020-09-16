@@ -6,9 +6,11 @@
     width: 100%;
     font-size: 23px;
     line-height: 32px;
-    color: rgba(0, 0, 0, 0.5);
+    opacity: 0.5;
+    background-color: inherit;
+    color: inherit;
 }
 
 .input:focus {
-    color: rgba(0, 0, 0, 1);
+    opacity: 1;
 }
