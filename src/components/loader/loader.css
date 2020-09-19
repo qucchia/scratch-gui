@@ -17,6 +17,13 @@
     color: white;
 }
 
+/* tw: dark theme */
+@media (prefers-color-scheme: dark) {
+    .background {
+        background-color: $motion-primary-dark;
+    }
+}
+
 .fullscreen {
     /* Break out of the layout using position: fixed to cover the whole screen */
     position: fixed;
@@ -186,6 +193,7 @@
     width: 250px;
     height: 5px;
     border: 1px solid white;
+    margin: auto;
 }
 .tw-progress-inner {
     position: absolute;

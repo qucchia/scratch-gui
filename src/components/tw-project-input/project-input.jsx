@@ -3,7 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import bindAll from 'lodash.bindall';
 
-import {defaultProjectId, setProjectId} from '../../reducers/project-state';
+import {defaultProjectId, setProjectId, getIsLoading, getIsFetchingWithId} from '../../reducers/project-state';
 import styles from './project-input.css';
 
 class ProjectInput extends React.Component {
@@ -17,20 +17,19 @@ class ProjectInput extends React.Component {
             'handleFocus'
         ]);
         this.state = {
-            projectId: ''
+            projectId: this.props.projectId
         };
     }
-    componentDidMount () {
-        this.input.focus();
-        this.input.selectionStart = this.input.value.length;
-    }
     componentDidUpdate (prevProps) {
-        if (this.props.projectId !== prevProps.projectId) {
-            if (this.props.projectId !== defaultProjectId) {
+        if (this.props.projectId !== prevProps.projectId || this.props.loading !== prevProps.loading) {
+            if (this.props.projectId === defaultProjectId) {
+                this.input.focus();
+                this.input.selectionStart = this.input.value.length;
+            } else {
                 this.input.blur();
             }
             this.setState({
-                projectId: this.props.projectId || ''
+                projectId: this.props.projectId
             });
         }
     }
@@ -73,7 +72,7 @@ class ProjectInput extends React.Component {
         }
     }
     render () {
-        const projectId = this.state.projectId === defaultProjectId ? '' : this.state.projectId;
+        const projectId = this.state.projectId === defaultProjectId ? '' : this.state.projectId || '';
         return (
             <input
                 ref={elem => this.input = elem}
@@ -86,6 +85,7 @@ class ProjectInput extends React.Component {
                 onPaste={this.handlePaste}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
+                disabled={this.props.loading}
             />
         );
     }
@@ -93,11 +93,13 @@ class ProjectInput extends React.Component {
 
 ProjectInput.propTypes = {
     projectId: PropTypes.string,
-    setProjectId: PropTypes.func
+    setProjectId: PropTypes.func,
+    loading: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-    projectId: state.scratchGui.projectState.projectId
+    projectId: state.scratchGui.projectState.projectId,
+    loading: getIsLoading(state.scratchGui.projectState.loadingState) || getIsFetchingWithId(state.scratchGui.projectState.loadingState)
 });
 
 const mapDispatchToProps = dispatch => ({
