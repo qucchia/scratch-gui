@@ -56,17 +56,15 @@ const StageHeaderComponent = function (props) {
         onSetStageSmall,
         onSetStageFull,
         onSetStageUnFull,
-        showBranding,
+        isEmbedded,
         stageSizeMode,
         vm
     } = props;
 
     let header = null;
 
-    // tw: treat embed as fullscreen
-    if (isFullScreen || showBranding) {
+    if (isFullScreen || isEmbedded) {
         const stageDimensions = getStageDimensions(null, true);
-        // tw: we replace the branding image with a fullscreen button
         const stageButton = isFullScreen ? (
             <Button
                 className={styles.stageButton}
@@ -97,7 +95,11 @@ const StageHeaderComponent = function (props) {
             </Button>
         );
         header = (
-            <Box className={styles.stageHeaderWrapperOverlay}>
+            <Box
+                className={classNames(styles.stageHeaderWrapperOverlay, {
+                    [styles.stageHeaderEmbed]: isEmbedded
+                })}
+            >
                 <Box
                     className={styles.stageMenuWrapper}
                     style={{width: stageDimensions.width}}
@@ -192,13 +194,12 @@ StageHeaderComponent.propTypes = {
     onSetStageLarge: PropTypes.func.isRequired,
     onSetStageSmall: PropTypes.func.isRequired,
     onSetStageUnFull: PropTypes.func.isRequired,
-    showBranding: PropTypes.bool.isRequired,
+    isEmbedded: PropTypes.bool.isRequired,
     stageSizeMode: PropTypes.oneOf(Object.keys(STAGE_SIZE_MODES)),
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
 StageHeaderComponent.defaultProps = {
-    showBranding: false, // tw: never show branding, this should be passed up from container but for some reason it's not. This is a quick and dirty fix.
     stageSizeMode: STAGE_SIZE_MODES.large
 };
 

@@ -1,4 +1,3 @@
-import bindAll from 'lodash.bindall';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -17,9 +16,16 @@ const TWEditorWarningHOC = function (WrappedComponent) {
             }
         }
         render () {
+            const {
+                /* eslint-disable no-unused-vars */
+                isPlayerOnly,
+                onShowWarning,
+                /* eslint-enable no-unused-vars */
+                ...props
+            } = this.props;
             return (
                 <WrappedComponent
-                    {...this.props}
+                    {...props}
                 />
             );
         }

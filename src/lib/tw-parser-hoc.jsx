@@ -19,12 +19,10 @@ const getRoot = () => {
     return `/${path.join('/')}`;
 };
 
-const getUseRouting = () => ['turbowarp.org', 'staging.turbowarp.org', 'localhost'].includes(location.hostname);
-
 const playerPath = getRoot();
 const editorPath = `${playerPath}editor.html`;
 const fullscreenPath = `${playerPath}fullscreen.html`;
-const useRouting = getUseRouting();
+const useRouting = true;
 
 const TWParserHoc = function (WrappedComponent) {
     class HashParserComponent extends React.Component {
@@ -81,35 +79,47 @@ const TWParserHoc = function (WrappedComponent) {
         handleHashChange () {
             const hashMatch = window.location.hash.match(/#(\d+)/);
             const hashProjectId = hashMatch === null ? defaultProjectId : hashMatch[1];
-            this.props.setProjectId(hashProjectId.toString());
+            this.props.onSetProjectId(hashProjectId.toString());
         }
         handleSearchChange () {
             if (useRouting) {
                 if (location.pathname === editorPath) {
                     if (this.props.isPlayerOnly) {
-                        this.props.setIsPlayerOnly(false);
+                        this.props.onSetIsPlayerOnly(false);
                     }
                     if (this.props.isFullScreen) {
-                        this.props.setIsFullScreen(false);
+                        this.props.onSetIsFullScreen(false);
                     }
                 } else if (location.pathname === playerPath) {
                     if (!this.props.isPlayerOnly) {
-                        this.props.setIsPlayerOnly(true);
+                        this.props.onSetIsPlayerOnly(true);
                     }
                     if (this.props.isFullScreen) {
-                        this.props.setIsFullScreen(false);
+                        this.props.onSetIsFullScreen(false);
                     }
                 } else if (location.pathname === fullscreenPath) {
                     if (!this.props.isFullScreen) {
-                        this.props.setIsFullScreen(true);
+                        this.props.onSetIsFullScreen(true);
                     }
                 }
             }
         }
         render () {
+            const {
+                /* eslint-disable no-unused-vars */
+                isFetchingWithoutId,
+                isPlayerOnly,
+                onSetIsPlayerOnly,
+                isFullScreen,
+                onSetIsFullScreen,
+                projectId,
+                onSetProjectId,
+                /* eslint-enable no-unused-vars */
+                ...props
+            } = this.props;
             return (
                 <WrappedComponent
-                    {...this.props}
+                    {...props}
                 />
             );
         }
@@ -117,11 +127,11 @@ const TWParserHoc = function (WrappedComponent) {
     HashParserComponent.propTypes = {
         isFetchingWithoutId: PropTypes.bool,
         isPlayerOnly: PropTypes.bool,
-        setIsPlayerOnly: PropTypes.func,
+        onSetIsPlayerOnly: PropTypes.func,
         isFullScreen: PropTypes.bool,
-        setIsFullScreen: PropTypes.func,
+        onSetIsFullScreen: PropTypes.func,
         projectId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        setProjectId: PropTypes.func
+        onSetProjectId: PropTypes.func
     };
     const mapStateToProps = state => {
         const loadingState = state.scratchGui.projectState.loadingState;
@@ -133,9 +143,9 @@ const TWParserHoc = function (WrappedComponent) {
         };
     };
     const mapDispatchToProps = dispatch => ({
-        setIsPlayerOnly: isPlayerOnly => dispatch(setPlayer(isPlayerOnly)),
-        setIsFullScreen: isFullScreen => dispatch(setFullScreen(isFullScreen)),
-        setProjectId: projectId => dispatch(setProjectId(projectId))
+        onSetIsPlayerOnly: isPlayerOnly => dispatch(setPlayer(isPlayerOnly)),
+        onSetIsFullScreen: isFullScreen => dispatch(setFullScreen(isFullScreen)),
+        onSetProjectId: projectId => dispatch(setProjectId(projectId))
     });
     return connect(
         mapStateToProps,
