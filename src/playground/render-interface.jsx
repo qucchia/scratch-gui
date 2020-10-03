@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import {FormattedMessage} from 'react-intl';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import TWParserHOC from '../lib/tw-parser-hoc.jsx';
 import TWTitleFetcherHOC from '../lib/tw-title-fetcher-hoc.jsx';
@@ -49,6 +50,39 @@ const Interface = ({isPlayerOnly}) => (
                     <ProjectInput />
                     <About />
                     <Examples />
+                    <footer className={styles.footer}>
+                        <p>
+                            <FormattedMessage
+                                defaultMessage="TurboWarp is not affiliated with or otherwise officially connected to Scratch, the Scratch Team, or the Scratch Foundation."
+                                description="Disclaimer that TurboWarp is not connected to Scratch"
+                                id="tw.footer.disclaimer"
+                            />
+                        </p>
+                        <p>
+                            <FormattedMessage
+                                defaultMessage="TurboWarp is hosted by {fosshost}."
+                                description="Host credit"
+                                id="tw.footer.host"
+                                values={{
+                                    fosshost: (
+                                        <a
+                                            href="https://fosshost.org"
+                                            // _blank is safe here because of noopener
+                                            // eslint-disable-next-line react/jsx-no-target-blank
+                                            target="_blank"
+                                            rel="noopener"
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="fosshost.org"
+                                                description="Link to fosshost.org"
+                                                id="tw.footer.host.fosshost"
+                                            />
+                                        </a>
+                                    )
+                                }}
+                            />
+                        </p>
+                    </footer>
                 </div>
             ) : null}
         </div>

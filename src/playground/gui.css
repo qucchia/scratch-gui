@@ -10,7 +10,7 @@ a {
     top: 0;
     left: 0;
     width: 100%;
-    margin-bottom: 16px;
+    padding-bottom: 16px;
 }
 
 .editor {
@@ -34,6 +34,10 @@ a {
     /* there's a couple extra pixels of border around the stage */
     width: 482px;
     margin: auto;
+}
+
+.footer p {
+    font-size: small;
 }
 
 @media (prefers-color-scheme: dark) {
