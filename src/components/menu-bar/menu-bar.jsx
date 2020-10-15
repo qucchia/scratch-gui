@@ -27,11 +27,12 @@ import DeletionRestorer from '../../containers/deletion-restorer.jsx';
 import TurboMode from '../../containers/turbo-mode.jsx';
 import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 
-import CompatibilityMode from '../../containers/tw-compatibility-mode.jsx';
+import SixtyFPSToggler from '../../containers/tw-sixty-fps-toggler.jsx';
 import HighQualityPen from '../../containers/tw-high-quality-pen.jsx';
 import ChangeUsername from '../../containers/tw-change-username.jsx';
 import CloudVariablesToggler from '../../containers/tw-cloud-toggler.jsx';
 import CompilerOptions from '../../containers/tw-compiler-options.jsx';
+import TWSaveStatus from './tw-save-status.jsx';
 
 import {openTipsLibrary} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
@@ -356,17 +357,19 @@ class MenuBar extends React.Component {
             >
                 <div className={styles.mainMenu}>
                     <div className={styles.fileGroup}>
-                        <div className={classNames(styles.menuBarItem)}>
-                            <img
-                                alt="Scratch"
-                                className={classNames(styles.scratchLogo, {
-                                    [styles.clickable]: typeof this.props.onClickLogo !== 'undefined'
-                                })}
-                                draggable={false}
-                                src={this.props.logo}
-                                onClick={this.props.onClickLogo}
-                            />
-                        </div>
+                        {this.props.onClickLogo ? (
+                            <div className={classNames(styles.menuBarItem)}>
+                                <img
+                                    alt="Scratch"
+                                    className={classNames(styles.scratchLogo, {
+                                        [styles.clickable]: typeof this.props.onClickLogo !== 'undefined'
+                                    })}
+                                    draggable={false}
+                                    src={this.props.logo}
+                                    onClick={this.props.onClickLogo}
+                                />
+                            </div>
+                        ) : null}
                         {(this.props.canChangeLanguage) && (<div
                             className={classNames(styles.menuBarItem, styles.hoverable, styles.languageMenu)}
                         >
@@ -507,23 +510,23 @@ class MenuBar extends React.Component {
                                             )}
                                         </MenuItem>
                                     )}</TurboMode>
-                                    <CompatibilityMode>{(toggleCompatibilityMode, {compatibilityMode}) => (
-                                        <MenuItem onClick={toggleCompatibilityMode}>
-                                            {compatibilityMode ? (
+                                    <SixtyFPSToggler>{(toggleSixtyFPS, {isSixty}) => (
+                                        <MenuItem onClick={toggleSixtyFPS}>
+                                            {isSixty ? (
                                                 <FormattedMessage
-                                                    defaultMessage="Turn on 60 FPS mode"
-                                                    description="Menu bar item for turning on compatibility mode"
-                                                    id="tw.settings.compatOn"
+                                                    defaultMessage="Turn off 60 FPS mode"
+                                                    description="Menu bar item for turning off 60 FPS mode"
+                                                    id="tw.settings.60off"
                                                 />
                                             ) : (
                                                 <FormattedMessage
-                                                    defaultMessage="Turn off 60 FPS mode"
-                                                    description="Menu bar item for turning off compatibility mode"
-                                                    id="tw.settings.compatOff"
+                                                    defaultMessage="Turn on 60 FPS mode"
+                                                    description="Menu bar item for turning on 60 FPS mode"
+                                                    id="tw.settings.60on"
                                                 />
                                             )}
                                         </MenuItem>
-                                    )}</CompatibilityMode>
+                                    )}</SixtyFPSToggler>
                                     <ChangeUsername>{(changeUsername, {isProjectRunning}) => (
                                         <MenuItem
                                             className={classNames({[styles.disabled]: isProjectRunning})}
@@ -793,6 +796,12 @@ class MenuBar extends React.Component {
                     </div>
                 </div>
 
+                <div className={styles.accountInfoGroup}>
+                    <div className={styles.menuBarItem}>
+                        <TWSaveStatus />
+                    </div>
+                </div>
+
                 {aboutButton}
             </Box>
         );
@@ -879,6 +888,8 @@ const mapStateToProps = (state, ownProps) => {
     const user = state.session && state.session.session && state.session.session.user;
     return {
         accountMenuOpen: accountMenuOpen(state),
+        authorThumbnailUrl: state.scratchGui.tw.author.thumbnail,
+        authorUsername: state.scratchGui.tw.author.username,
         fileMenuOpen: fileMenuOpen(state),
         editMenuOpen: editMenuOpen(state),
         isPlayerOnly: state.scratchGui.mode.isPlayerOnly,

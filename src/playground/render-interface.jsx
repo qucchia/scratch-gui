@@ -6,8 +6,9 @@ import {compose} from 'redux';
 import {FormattedMessage} from 'react-intl';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import TWParserHOC from '../lib/tw-parser-hoc.jsx';
-import TWTitleFetcherHOC from '../lib/tw-title-fetcher-hoc.jsx';
+import TWProjectMetaFetcherHOC from '../lib/tw-project-meta-fetcher-hoc.jsx';
 import TWEditorWarningHOC from '../lib/tw-editor-warning-hoc.jsx';
+import TWStateManagerHOC from '../lib/tw-state-manager-hoc.jsx';
 
 import GUI from './render-gui.jsx';
 import MenuBar from '../components/menu-bar/menu-bar.jsx';
@@ -16,7 +17,7 @@ import About from '../components/tw-home/about.jsx';
 import Title from '../components/tw-home/title.jsx';
 import Examples from '../components/tw-examples/examples.jsx';
 
-import styles from './gui.css';
+import styles from './interface.css';
 
 if (window !== window.parent) {
     // Show a warning when trying to embed this page. Users shouldn't do that.
@@ -24,15 +25,10 @@ if (window !== window.parent) {
     alert('You are embedding TurboWarp incorrectly.\n\nGo here for instructions: https://github.com/TurboWarp/scratch-gui/wiki/Embedding');
 }
 
-const onClickLogo = () => {
-    location.hash = '';
-};
-
 const Interface = ({isPlayerOnly}) => (
     <div className={classNames(isPlayerOnly ? styles.stageOnly : styles.editor)}>
         {isPlayerOnly ? (
             <MenuBar
-                onClickLogo={onClickLogo}
                 canManageFiles
                 canChangeLanguage
                 enableSeeInside
@@ -53,8 +49,8 @@ const Interface = ({isPlayerOnly}) => (
                     <footer className={styles.footer}>
                         <p>
                             <FormattedMessage
-                                defaultMessage="TurboWarp is not affiliated with or otherwise officially connected to Scratch, the Scratch Team, or the Scratch Foundation."
-                                description="Disclaimer that TurboWarp is not connected to Scratch"
+                                defaultMessage="Projects from the Scratch website are licensed under the Creative Commons Attribution-ShareAlike 2.0 license. TurboWarp is not affiliated with Scratch, the Scratch Team, or the Scratch Foundation."
+                                description="Disclaimer that TurboWarp is not connected to Scratch and licensing information"
                                 id="tw.footer.disclaimer"
                             />
                         </p>
@@ -109,8 +105,9 @@ const ConnectedInterface = connect(
 const WrappedInterface = compose(
     AppStateHOC,
     TWParserHOC,
-    TWTitleFetcherHOC,
-    TWEditorWarningHOC
+    TWProjectMetaFetcherHOC,
+    TWEditorWarningHOC,
+    TWStateManagerHOC
 )(ConnectedInterface);
 
 export default WrappedInterface;
